@@ -23,9 +23,12 @@ g++ -std=c++17 pc_lite/main.cpp -o pc_lite_app $(sdl2-config --cflags --libs) -l
 ## Run
 1. Launch X‑Plane and ensure **UDP** is enabled on port **49000**.
 2. Edit `pc_lite/commands.txt` to list the X‑Plane commands you want buttons for.
-3. Start the app:
+3. Start the app without arguments for the button GUI:
 ```bash
 ./pc_lite_app
 ```
-A window appears with one button per command.
-Clicking a button sends its command to `localhost:49000` using the `CMND` message.
+   Clicking a button sends its command to `localhost:49000` using the `CMND` message.
+4. Or send a single command directly from the command line:
+```bash
+./pc_lite_app "sim/operation/pause_toggle"
+```

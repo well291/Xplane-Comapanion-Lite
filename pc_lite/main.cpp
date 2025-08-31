@@ -9,7 +9,6 @@
 #include <iostream>
 #include <vector>
 
-// Button representation for the simple UI
 struct Button {
     SDL_Rect rect;
     std::string label;
@@ -28,7 +27,7 @@ bool send_command(const std::string& command) {
 
     sockaddr_in addr{};
     addr.sin_family = AF_INET;
-    addr.sin_port = htons(49000);
+    addr.sin_port = htons(49000); // X-Plane listens on UDP 49000
     inet_pton(AF_INET, "127.0.0.1", &addr.sin_addr);
 
     ssize_t sent = sendto(sock, packet.data(), packet.size(), 0,
@@ -38,7 +37,6 @@ bool send_command(const std::string& command) {
     }
 
     close(sock);
-    std::cout << "Sent command: " << command << std::endl;
     return sent >= 0;
 }
 
@@ -54,6 +52,16 @@ std::vector<std::string> load_commands(const std::string& path) {
 }
 
 int main(int argc, char* argv[]) {
+    // CLI mode: send a single command and exit
+    if (argc > 1) {
+        std::string cmd = argv[1];
+        if (!send_command(cmd)) {
+            return 1;
+        }
+        std::cout << "Sent command: " << cmd << std::endl;
+        return 0;
+    }
+
     auto commands = load_commands("pc_lite/commands.txt");
     if (commands.empty()) {
         std::cerr << "No commands found in pc_lite/commands.txt" << std::endl;

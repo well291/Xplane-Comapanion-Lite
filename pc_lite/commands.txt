@@ -1,0 +1,4 @@
+sim/operation/pause_toggle
+sim/flight_controls/landing_gear_toggle
+sim/flight_controls/flaps_down
+sim/operation/auto_start
